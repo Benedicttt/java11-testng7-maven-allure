@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.example</groupId>
+    <artifactId>java11-testng7-maven-allure-selenide</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <allure.results.directory>target/allure-results</allure.results.directory>
+        <allure.report.directory>target/allure-report</allure.report.directory>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-testng</artifactId>
+            <version>2.13.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>7.1.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.codeborne</groupId>
+            <artifactId>selenide</artifactId>
+            <version>5.23.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>4.4.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>json-schema-validator</artifactId>
+            <version>4.4.0</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.2</version>
+
+                <configuration>
+                    <forkCount>4</forkCount>
+                    <reuseForks>true</reuseForks>
+
+                    <includes>
+                        <include>**/*.java</include>
+                    </includes>
+
+                    <systemProperties>
+                        <property>
+                            <name>allure.results.directory</name>
+                            <value>${allure.results.directory}</value>
+                        </property>
+                    </systemProperties>
+
+                    <properties>
+                        <property>
+                            <name>parallel</name>
+                            <value>methods</value>
+                        </property>
+                        <property>
+                            <name>threadCount</name>
+                            <value>3</value>
+                        </property>
+                        <property>
+                            <name>dataproviderthreadcount</name>
+                            <value>6</value>
+                        </property>
+                    </properties>
+                </configuration>
+
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>artifactory</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <repositories>
+                <repository>
+                    <snapshots />
+                    <id>mvn</id>
+                    <name>mvn</name>
+                    <url>https://art.lmru.tech/artifactory/mvn/</url>
+                </repository>
+            </repositories>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>plugins</id>
+                    <name>plugins</name>
+                    <url>https://art.lmru.tech/artifactory/mvn/</url>
+                </pluginRepository>
+            </pluginRepositories>
+        </profile>
+    </profiles>
+
+    <repositories>
+        <repository>
+            <name>publicGroup</name>
+            <id>art.lmru.tech</id>
+            <url>https://art.lmru.tech/mvn-umbrella</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
+</project>
